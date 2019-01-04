@@ -1,0 +1,33 @@
+-- Output from articles # 1
+           slug            | visits
+---------------------------+--------
+ candidate-is-jerk         | 338647
+ bears-love-berries        | 253801
+ bad-things-gone           | 170098
+ goats-eat-googles         |  84906
+ trouble-for-troubled      |  84810
+ balloon-goons-doomed      |  84557
+ so-many-bears             |  84504
+ media-obsessed-with-bears |  84383
+ 
+ -- Output from authors
+ 
+           name          | count
+------------------------+--------
+ Ursula La Multa        | 507594
+ Rudolf von Treppenwitz | 423457
+ Anonymous Contributor  | 170098
+ Markoff Chaney         |  84557
+ 
+ 
+-- Output of errors/requests per day
+
+ day | percent
+-----+---------
+   1 |       0
+   2 |       0
+   3 |       0
+   4 |       0
+   5 |       0
+   6 |       0
+   7 |       1
