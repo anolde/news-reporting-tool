@@ -3,8 +3,12 @@
 #
 
 from flask import Flask, request, redirect, url_for
+import jinja2
 
-from reportingtool import get_popular_authors, get_error_audit, get_popular_articles
+from reportingtool import get_popular_articles
+from reportingtool import get_popular_authors
+from reportingtool import get_error_audit
+
 app = Flask(__name__)
 
 # HTML template for the forum page
@@ -16,29 +20,38 @@ HTML_WRAP = '''\
     <style>
       h1, form { text-align: center; display: flex; }
       textarea { width: 400px; height: 100px; }
-      div.post { border: 1px solid #999;
+      div.result { border: 1px solid #999;
                  padding: 10px 10px;
                  margin: 10px 20%%; }
       hr.postbound { width: 50%%; }
-      em.date { color: #999 }
+      em.name { color: #999 }
     </style>
   </head>
   <body>
     <h1>News Reporting Tool</h1>
     <form method=get>
-      <div><button name="article" value=1 type="submit")>Get Best Articles</button></div>
-      <div><button name="author" value=1 type="submit" >Get Best Authors</button></div>
-      <div><button name="error" value=1 type="submit" >See Error Ratio Per Day</button></div>
+      <div><button name="article" value=1 type="submit")>
+      Get Best Articles</button></div>
+      <div><button name="author" value=1 type="submit" >
+      Get Best Authors</button></div>
+      <div><button name="error" value=1 type="submit" >
+      See Error Ratio Per Day</button></div>
     </form>
     <!-- post content will go here -->
-%s
+        %s
+        <br>
+        %s
   </body>
 </html>
 '''
+# HTML template for a result
+result = '''
+    <br>
+    <div class=result><em class=name>%s</em><br>%s</div>
+'''
 
-# HTML template for response
-POST = '''\
-    <div class=post><em class=date>%s</em><br>%s</div>
+tableName = '''
+    <h2> %s </h2>
 '''
 
 
@@ -46,14 +59,20 @@ POST = '''\
 def main():
     '''Main page.'''
     if request.args.get("article"):
-        results = get_popular_articles()
+        req = get_popular_articles()
+        title = "Articles and Number of Requests"
     elif request.args.get("author"):
-        results = get_popular_authors()
+        req = get_popular_authors()
+        title = "Authors and Number of Requests for Their Work"
     elif request.args.get("error"):
-        results = get_error_audit()
+        req = get_error_audit()
+        title = "Percent of Failed Requests Per Day"
     else:
-        results = ""
-    html = HTML_WRAP % results
+        req = ""
+        title = ""
+    results = "".join(result % (column, value) for column, value in req)
+    name = "".join(tableName % (title))
+    html = HTML_WRAP % (name, results)
     return html
 
 
