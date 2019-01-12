@@ -75,5 +75,6 @@ def get_error_audit():
     requests_per_day as r,
     errors_per_day as e
     WHERE r.day = e.day
+    AND 100 * errors/requests > 1
     ''')
     return c.fetchall()
